@@ -8,6 +8,7 @@
         <router-link to="/TheTenderReview">招标审核</router-link>
         <router-link to="/imageUpload">图片上传</router-link>
         <router-link to="/peakfire">商家认证</router-link>
+        <router-link to="/changePasswrod">密码修改</router-link>
       </div>
       <div class="right-display">
         <router-view />
@@ -32,10 +33,8 @@ export default {
   }
   .content {
     width: 100%;
-    height: 500px;
+    height: 540px;
     margin-top: 20px;
-    // padding-left: 20px;
-    // padding-right: 20px;
     .left-nav {
       height: 100%;
       width: 200px;
@@ -54,12 +53,11 @@ export default {
 a {
   display: inline-block;
   width: 200px;
-  height: 100px;
-  line-height: 100px;
+  height: 90px;
+  line-height: 90px;
   text-align: center;
   text-decoration: none;
   color: white;
- 
 
   &:hover {
     background: #303133;
