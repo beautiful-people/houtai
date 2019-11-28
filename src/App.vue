@@ -1,66 +1,72 @@
 <template>
   <div class="about">
-    <div class="left">
-      <el-row>
-        <el-col :span="14">
-          <el-menu
-            default-active="allusers"
-            class="el-menu-vertical-demo"
-            @open="handleOpen"
-            @close="handleClose"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
-            unique-opened
-            router
-          >
-            <el-menu-item index="BusinessManagement">商家管理</el-menu-item>
-            <el-menu-item index="manageusergroup">管理用户</el-menu-item>
-            <el-menu-item index="TheTenderReview">招标审核</el-menu-item>
-            <el-menu-item index="imageUpload">图片上传</el-menu-item>
-            <el-menu-item index="peakfire">商家认证</el-menu-item>
-          </el-menu>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="right">
-      <router-view />
+    <div class="nav"></div>
+    <div class="content">
+      <div class="left-nav">
+        <router-link to="/BusinessManagement">商家管理</router-link>
+        <router-link to="/manageusergroup">管理用户</router-link>
+        <router-link to="/TheTenderReview">招标审核</router-link>
+        <router-link to="/imageUpload">图片上传</router-link>
+        <router-link to="/peakfire">商家认证</router-link>
+      </div>
+      <div class="right-display">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    }
-  }
+
 };
 </script>
 
 <style lang="less" scoped>
 .about {
-  overflow: hidden;
+  width: 100%;
+  .nav {
+    width: 100%;
+    height: 50px;
+    background: rgb(84, 92, 100);
+  }
+  .content {
+    width: 100%;
+    height: 500px;
+    margin-top: 20px;
+    // padding-left: 20px;
+    // padding-right: 20px;
+    .left-nav {
+      height: 100%;
+      width: 200px;
+      float: left;
+      background: rgb(84, 92, 100);
+      margin-left: 20px;
+    }
+    .right-display {
+      height: 100%;
+      margin-left: 240px;
+      margin-right: 20px;
+      background: red;
+    }
+  }
 }
-.left {
+a {
+  display: inline-block;
   width: 200px;
-  height: 100%;
-  float: left;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+ 
+
+  &:hover {
+    background: #303133;
+  }
 }
-.right {
-  float: left;
-  padding: 20px 40px;
-}
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  height: 600px;
-  min-height: 400px;
-}
-.el-row {
-    text-align: center;
+.router-link-exact-active,
+.router-link-active {
+  color: #ffd04b;
 }
 </style>

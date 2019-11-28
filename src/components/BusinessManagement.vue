@@ -1,5 +1,7 @@
 <template>
-    <div class="BusinessManagement"></div>
+    <div class="BusinessManagement">
+        商家管理
+    </div>
 </template>
 
 <script>

@@ -1,5 +1,7 @@
 <template>
-    <div class="TheTenderReview"></div>
+    <div class="TheTenderReview">
+        招标审核
+    </div>
 </template>
 
 <script>

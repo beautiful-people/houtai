@@ -1,5 +1,7 @@
 <template>
-    <div class="peakfire"></div>
+    <div class="peakfire">
+        商家认证
+    </div>
 </template>
 
 <script>

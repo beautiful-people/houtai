@@ -1,5 +1,7 @@
 <template>
-    <div class="manageusergroup"></div>
+    <div class="manageusergroup">
+        管理用户
+    </div>
 </template>
 
 <script>
