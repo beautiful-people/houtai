@@ -35,6 +35,11 @@ const routes = [
     name: 'peakfire',
     component: () => import('../components/peakfire')
   },
+  {
+    path: '/changePasswrod',
+    name: 'changePasswrod',
+    component: () => import('../components/changePasswrod')
+  }
 ]
 
 const router = new VueRouter({
