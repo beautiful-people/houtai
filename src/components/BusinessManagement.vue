@@ -1,6 +1,6 @@
 <template>
   <div class="BusinessManagement">
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%" max-height="400">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -52,22 +52,22 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="商家 ID" prop="id"></el-table-column>
-      <el-table-column label="商家注册名" prop="name"></el-table-column>
-      <el-table-column label="联系人" prop="people"></el-table-column>
-      <el-table-column label="手机" prop="tel"></el-table-column>
-      <el-table-column label="操作" prop="operation">
+      <el-table-column label="商家 ID" prop="id" align="center"></el-table-column>
+      <el-table-column label="商家注册名" prop="name" align="center"></el-table-column>
+      <el-table-column label="联系人" prop="people" align="center"></el-table-column>
+      <el-table-column label="手机" prop="tel" align="center"></el-table-column>
+      <el-table-column label="操作" prop="operation" align="center">
         <template slot-scope="scope">
-            <el-button size="mini" type="danger" @click="dialogVisible = true,handleDelete(scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" @click="dialogVisible = true,handleDelete(scope.row)">取消商家认证</el-button>
         </template>          
       </el-table-column>
     </el-table>
-    <!-- 删除按钮的模态框 -->
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-        <span>这是一段信息</span>
+    <!-- 取消商家认证按钮的模态框 -->
+    <el-dialog title="注意" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" class="model">
+        <span class="span">是否取消当前商家认证？</span>
         <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="dialogVisible = false" class="sure">确 定</el-button>
         </span>
     </el-dialog>
   </div>
@@ -79,6 +79,7 @@ export default {
   data() {
     return {
         dialogVisible: false,
+        admId:"",
         tableData: [
             {
             id: "12987122",
@@ -122,10 +123,11 @@ export default {
     };
   },
    methods: {
-      handleDelete(row) {/* 删除按钮,获取id值，并向服务器传送id值 */
+      handleDelete(row) {/* 取消商家认证按钮,获取id值，并向服务器传送id值 */
         console.log(row.id);
+        this.admId = row.id;
       },
-      handleClose(done) {/* 删除模态框的关闭 */
+      handleClose(done) {/* 取消商家认证模态框的关闭 */
         this.$confirm('确认关闭？')
           .then(()=> {
             done();
@@ -148,5 +150,23 @@ export default {
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
+}
+.span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+.sure {
+    color:  #F56C6C;
+    background-color:white;
+    border-color: #F56C6C;
+}
+.sure:hover {
+    background-color: rgba(245, 108, 108, 0.315);
+    border-color: rgba(245, 108, 108, 0.315);
+}
+.el-table th {
+    background: #99a9bf;
+    color: white;
 }
 </style>

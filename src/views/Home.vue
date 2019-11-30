@@ -1,9 +1,9 @@
 <template>
   <div class="about">
     <div class="nav">
-      <span>地区:{{}}</span>
+      <span>地区:{{admArea}}</span>
       <div>
-        <span>管理员：{{power}}{{userID}}</span>
+        <span>管理员：{{power}}</span>
         <a href="javascript:;" @click="quit">退出</a>
       </div>
     </div>
@@ -30,9 +30,10 @@ export default {
   name: 'home',
   data() {
     return {
-      power:"",
-      role:"",
-      userID:""
+      power:"",//权限判断时用的
+      role:"",//超级管理员时显示管理员选项卡
+      accountId:"",//管理员的id
+      admArea:""
     };
   },
   methods: {
@@ -42,21 +43,22 @@ export default {
     }
   },
   created() {
-    this.axios.get('/users') 
-      .then(res => {
-        this.userID = sessionStorage.getItem("userID")
-        console.log('获取用户权限：', res.data.power)
-        if(!res.data.power) {
+    /* this.axios.get('/users') 
+      .then(res => { */
+        this.accountId = sessionStorage.getItem("accountId")
+        this.admArea = sessionStorage.getItem("admArea")
+        /* console.log('获取用户权限：', res.data.power) */
+        if(sessionStorage.getItem("power")== -1) {
           this.power = "超级管理员";
           this.role = true
         } else {
           this.power = "管理员";
           this.role = false
         }
-      })
+      /* })
       .catch(err => {
         console.log(err)
-      })
+      }) */
   }    
 };
 </script>

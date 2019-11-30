@@ -32,21 +32,24 @@ export default {
       // this.$route：保存了当前路由信息
       console.log("登录");
       this.axios
-        .post("/users/login", {
-          username: this.username,
-          userpass: this.userpass
+        .post("/login", {
+          accName: this.username,
+          accPwd: this.userpass
         })
         .then(res => {
           console.log(res.data);
-          if (res.data.state == "200") {
+          if (res.data.code == "200") {
             // var token = "njaksxbxkjasbkjcxasbjk" // 模拟后台返回的token
             var token = res.data.token;
             sessionStorage.setItem("token", token);
-            var userID = res.data.userID;
-            sessionStorage.setItem("userID",userID)
+            var accountId = res.data.data.accountId;
+            sessionStorage.setItem("accountId",accountId)
 
-            var power = res.data.power;
-            console.log(power);            
+            var power = res.data.data.power;
+            sessionStorage.setItem("power",power);
+            
+            var admArea = res.data.data.admArea;
+            sessionStorage.setItem("admArea",admArea);
 
             // 切换路由
             this.$router.replace("/home/BusinessManagement");
