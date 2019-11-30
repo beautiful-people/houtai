@@ -1,15 +1,20 @@
 <template>
-  <form class="login-form">
-    <div class="form-group">
-      <input type="text" placeholder="请输入账号" v-model="username" />
+  <div class="app-entrance">
+    <div class="content">
+      <h1>装信通后台管理系统</h1>
+      <form class="login-form">
+        <div class="form-group">
+          <input type="text" placeholder="请输入账号" v-model="username" />
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="请输入密码" v-model="userpass" @keyup.enter="getLogin" />
+        </div>
+        <div class="form-group">
+          <input type="button" value="登录" @click="getLogin" />
+        </div>
+      </form>
     </div>
-    <div class="form-group">
-      <input type="password" placeholder="请输入密码" v-model="userpass" @keyup.enter="getLogin" />
-    </div>
-    <div class="form-group">
-      <input type="button" value="登录" @click="getLogin" />
-    </div>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -38,6 +43,10 @@ export default {
             var token = res.data.token;
             sessionStorage.setItem("token", token);
 
+            var power = res.data.power;
+            console.log(power);
+            
+
             // 切换路由
             this.$router.replace("/home/BusinessManagement");
 
@@ -54,6 +63,31 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "../assets/style/base.less";
+
+.app-entrance {
+    display: flex; // 弹性布局
+    justify-content: center; // 让子元素水平居中
+    align-items: center; // 让子元素垂直居中
+    flex-direction: column; // 决定子元素排列方式
+    height: 100vh; // 视窗单位，1vh=浏览器可视区域高度的 1%
+    background: url("../../public/img/background/register_bg.jpg") center no-repeat;
+    background-size: cover;
+
+    .content {
+      width: 400px;
+      height: 400px;
+      border: 1px solid rgb(84, 92, 100);
+      display: flex; 
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      box-shadow: 0 0 5px;
+
+      h1 {
+        margin-bottom: 10px;
+      }
+    }
+}
 
 .login-form {
   padding: 0 20px;
