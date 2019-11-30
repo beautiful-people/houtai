@@ -3,22 +3,24 @@
     <div class="nav">
       <span>地区:{{}}</span>
       <div>
-        <span>管理员：{{}}</span>
+        <span>管理员：{{power}}{{userID}}</span>
         <a href="javascript:;" @click="quit">退出</a>
       </div>
     </div>
-    <div class="content">
-      <div class="left-nav">
-        <router-link to="/home/BusinessManagement">商家管理</router-link>
-        <router-link to="/home/manageusergroup">管理用户</router-link>
-        <router-link to="/home/TheTenderReview">招标审核</router-link>
-        <router-link to="/home/imageUpload">图片上传</router-link>
-        <router-link to="/home/peakfire">商家认证</router-link>
-        <router-link to="/home/changePasswrod">密码修改</router-link>
-      </div>
-      <div class="right-display">
-        <router-view></router-view>
-      </div>
+    <div class="bottom-content">
+      <div class="content">
+        <div class="left-nav">
+          <router-link to="/home/BusinessManagement">商家管理</router-link>
+          <router-link to="/home/manageusergroup" v-if="role">管理用户</router-link>
+          <router-link to="/home/TheTenderReview">招标审核</router-link>
+          <router-link to="/home/imageUpload">图片上传</router-link>
+          <router-link to="/home/peakfire">商家认证</router-link>
+          <router-link to="/home/changePasswrod">密码修改</router-link>
+        </div>
+        <div class="right-display">
+          <router-view></router-view>
+        </div>
+    </div>
     </div>
   </div>
 </template>
@@ -26,12 +28,36 @@
 <script>
 export default {
   name: 'home',
+  data() {
+    return {
+      power:"",
+      role:"",
+      userID:""
+    };
+  },
   methods: {
     quit () {
       sessionStorage.removeItem('token')
       this.$router.replace('/')
     }
-  }
+  },
+  created() {
+    this.axios.get('/users') 
+      .then(res => {
+        this.userID = sessionStorage.getItem("userID")
+        console.log('获取用户权限：', res.data.power)
+        if(!res.data.power) {
+          this.power = "超级管理员";
+          this.role = true
+        } else {
+          this.power = "管理员";
+          this.role = false
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }    
 };
 </script>
 
@@ -39,7 +65,6 @@ export default {
 .about {
   width: 100%;
   height: 650px;
-  background: #efefef33;
   .nav {
     width: 100%;
     height: 50px;
@@ -56,13 +81,21 @@ export default {
       a {
         display: inline;
         color: white;
+        margin-left: 20px;
       }
     }
+  }
+  .bottom-content {
+    display: flex; // 弹性布局
+    justify-content: center; // 让子元素水平居中
+    align-items: center; // 让子元素垂直居中
+    flex-direction: column; // 决定子元素排列方式
+    height: 100vh-9; // 视窗单位，1vh=浏览器可视区域高度的 1%
+    background: #efefef33;
   }
   .content {
     width: 100%;
     height: 540px;
-    margin-top: 35px;
     .left-nav {
       height: 100%;
       width: 200px;

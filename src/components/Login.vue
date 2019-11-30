@@ -42,10 +42,11 @@ export default {
             // var token = "njaksxbxkjasbkjcxasbjk" // 模拟后台返回的token
             var token = res.data.token;
             sessionStorage.setItem("token", token);
+            var userID = res.data.userID;
+            sessionStorage.setItem("userID",userID)
 
             var power = res.data.power;
-            console.log(power);
-            
+            console.log(power);            
 
             // 切换路由
             this.$router.replace("/home/BusinessManagement");
