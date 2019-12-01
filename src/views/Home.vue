@@ -33,7 +33,7 @@ export default {
       power:"",//权限判断时用的
       role:"",//超级管理员时显示管理员选项卡
       accountId:"",//管理员的id
-      admArea:""
+      admArea:""//管理员地区
     };
   },
   methods: {

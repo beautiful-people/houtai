@@ -1,5 +1,9 @@
 <template>
   <div class="BusinessManagement">
+    <div class="search-content">
+      <input type="text" v-model="search" placeholder="请输入商家的姓名进行查找"> 
+      <button type="button" @click="getMerName(search)" class="search">查找</button>
+    </div>
     <el-table :data="tableData" style="width: 100%" max-height="400">
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -59,7 +63,7 @@
       <el-table-column label="操作" prop="operation" align="center">
         <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="dialogVisible = true,handleDelete(scope.row)">取消商家认证</el-button>
-        </template>          
+        </template>       
       </el-table-column>
     </el-table>
     <!-- 取消商家认证按钮的模态框 -->
@@ -79,6 +83,7 @@ export default {
   data() {
     return {
         dialogVisible: false,
+        search: "",
         admId:"",
         tableData: [
             {
@@ -133,6 +138,9 @@ export default {
             done();
           })
           .catch(()=> {});
+      },
+      getMerName(merName) {/* 根据名字查找商家 */
+        console.log(merName);
       }
     }
 };
@@ -157,16 +165,71 @@ export default {
     text-align: center;
 }
 .sure {
-    color:  #F56C6C;
-    background-color:white;
-    border-color: #F56C6C;
-}
-.sure:hover {
-    background-color: rgba(245, 108, 108, 0.315);
-    border-color: rgba(245, 108, 108, 0.315);
+    color: #FFF;
+    background-color: #409EFF;
+    border-color: #409EFF;
+
+    &:hover {
+        color: #606266;
+        background-color: rgba(64, 160, 255, 0.315);
+    }
 }
 .el-table th {
     background: #99a9bf;
     color: white;
+}
+.el-button--danger {
+    color: #FFF;
+    background-color: #409EFF;
+    border-color: #409EFF;
+
+    &:hover {
+        color: #606266;
+        background-color: rgba(64, 160, 255, 0.315);
+    }
+}
+.search {
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #FFF;
+    border: 1px solid #409EFF;
+    color: #FFF;
+    background-color: #409EFF;
+    -webkit-appearance: none;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: 0;
+    margin: 0;
+    -webkit-transition: .1s;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-left: 10px;
+
+    &:hover {
+        color: #606266;
+        background-color: rgba(64, 160, 255, 0.315);
+        border-color: rgba(64, 160, 255, 0.315);
+    }
+}
+.search-content {
+  width:100%;
+  height: 50px;
+  text-align: right;
+  input {
+    display: inline-block;
+    white-space: nowrap;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #409EFF;
+  }
+  margin-bottom: 10px;
 }
 </style>

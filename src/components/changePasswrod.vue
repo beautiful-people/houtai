@@ -3,24 +3,30 @@
         <h3>修改密码</h3>
         <div class="form-changepass">
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="原密码" prop="oldPass">
-                    <el-input v-model.number="ruleForm.oldPass"></el-input>
-                </el-form-item>
                 <el-form-item label="新密码" prop="pass">
                     <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="checkPass">
                     <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="年龄" prop="age">
-                    <el-input v-model.number="ruleForm.age"></el-input>
-                </el-form-item> -->
                 <el-form-item>                    
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
-                    <el-button type="primary" @click="submitForm('ruleForm',ruleForm.pass,ruleForm.checkPass)">提交</el-button>
+                    <el-button type="text" @click="dialogVisible = true" class="sure">确认</el-button>
                 </el-form-item>
             </el-form>
         </div>
+    <!-- type="primary" @click="submitForm('ruleForm',ruleForm.checkPass)" -->
+        <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose">
+            <span class="span">是否修改密码</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false,submitForm('ruleForm',ruleForm.checkPass)">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -28,22 +34,6 @@
 export default {
     name:"changePasswrod",
     data() {
-      var checkOldPass = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('原密码不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      };
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
@@ -66,37 +56,34 @@ export default {
       return {
         ruleForm: {
           pass: '',
-          checkPass: '',
-          oldPass: ''
+          checkPass: ''
         },
+        dialogVisible: false,
         rules: {
           pass: [
             { validator: validatePass, trigger: 'blur' }
           ],
           checkPass: [
             { validator: validatePass2, trigger: 'blur' }
-          ],
-          oldPass: [
-            { validator: checkOldPass, trigger: 'blur' }
           ]
         }
       };
     },
     methods: {
-      submitForm(formName,pass,checkPass) {
-          console.log(pass);
-          console.log(checkPass);//获取输入的密码
-        /* this.$refs[formName].validate((valid) => {
-          if (valid) {
-            console.log('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        }); */
+      submitForm(formName,checkPass) {
+            console.log(checkPass);//获取输入的密码
+            var accountId = sessionStorage.getItem("accountId");
+            console.log(accountId);
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+       handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(() => {
+            done();
+          })
+          .catch(() => {});
       }
     }
 }
@@ -128,13 +115,11 @@ export default {
     padding: 12px 20px;
     font-size: 14px;
     border-radius: 4px;
-
     &:hover {
         background-color: rgba(64, 160, 255, 0.315);
         border-color: rgba(64, 160, 255, 0.315);
     }
 }
-
 .el-button--primary {
     color: #FFF;
     background-color: #409EFF;
@@ -148,5 +133,22 @@ export default {
 }
 h3 {
     margin-bottom: 40px;
+}
+.span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+}
+.sure {
+    color: #FFF;
+    background-color: #409EFF;
+    border-color: #409EFF;
+    margin-left: 20px;
+
+    &:hover {
+        color: #606266;
+        background-color: rgba(64, 160, 255, 0.315);
+    }
 }
 </style>
