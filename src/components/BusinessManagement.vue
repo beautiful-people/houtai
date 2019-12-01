@@ -74,6 +74,12 @@
             <el-button type="primary" @click="dialogVisible = false" class="sure">确 定</el-button>
         </span>
     </el-dialog>
+    <!-- 分页 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="1000">
+    </el-pagination>
   </div>
 </template>
 
@@ -147,6 +153,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-pagination {/* 设置分页的定位 */
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+}
 .demo-table-expand {
   font-size: 0;
 }

@@ -18,7 +18,7 @@
             <el-upload
             class="upload-demo"
             ref="upload"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/api/test"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
