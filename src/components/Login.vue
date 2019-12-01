@@ -30,7 +30,7 @@ export default {
     getLogin() {
       // console.log("访问查询参数：", this.$route.query.id);
       // this.$route：保存了当前路由信息
-      console.log("登录");
+      /* console.log("登录");
       this.axios
         .post("/login", {
           accName: this.username,
@@ -49,18 +49,18 @@ export default {
             sessionStorage.setItem("power",power);
             
             var admArea = res.data.data.admArea;
-            sessionStorage.setItem("admArea",admArea);
+            sessionStorage.setItem("admArea",admArea); */
 
             // 切换路由
             this.$router.replace("/home/BusinessManagement");
 
-          } else {
+          /* } else {
             console.log("登陆失败");
           }
         })
         .catch(err => {
           console.log(err);
-        });
+        }); */
     }
   }
 };
