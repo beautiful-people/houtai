@@ -5,12 +5,13 @@
             <button type="button" @click="getMerName(search)" class="search">查找</button>
         </div>
         <el-table :data="tableData" style="width: 100%">
-            <el-table-column label="Date" prop="date" align="center"></el-table-column>
-            <el-table-column label="Name" prop="name" align="center"></el-table-column>
+            <el-table-column label="管理员名" prop="date" align="center"></el-table-column>
+            <el-table-column label="管理员身份" prop="name" align="center"></el-table-column>
+            <el-table-column label="负责区域" prop="address" align="center"></el-table-column>
             <el-table-column lign="right" align="center" label="操作">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" type="danger" @click="open(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -46,8 +47,26 @@ export default {
       handleEdit(index, row) {
         console.log(index, row);
       },
-      handleDelete(index, row) {
+      /* handleDelete(index, row) {
         console.log(index, row);
+      }, */
+      open(index, row) {//删除按钮
+      console.log(index,row)
+        this.$confirm('是否删除该管理员?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
       }
     },
 }

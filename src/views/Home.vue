@@ -11,7 +11,7 @@
       <div class="content">
         <div class="left-nav">
           <router-link to="/home/BusinessManagement">商家管理</router-link>
-          <router-link to="/home/manageusergroup">管理用户</router-link><!--  v-if="role" -->
+          <router-link to="/home/manageusergroup">管理员</router-link><!--  v-if="role" -->
           <router-link to="/home/TheTenderReview">招标审核</router-link>
           <router-link to="/home/imageUpload">图片上传</router-link>
           <router-link to="/home/peakfire">商家认证</router-link>
