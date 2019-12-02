@@ -174,10 +174,6 @@ export default {
         background-color: rgba(64, 160, 255, 0.315);
     }
 }
-.el-table th {
-    background: #99a9bf;
-    color: white;
-}
 .el-button--danger {
     color: #FFF;
     background-color: #409EFF;

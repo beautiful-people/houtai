@@ -4,7 +4,7 @@
       <input type="text" v-model="search" placeholder="请输入商家的姓名进行查找"> 
       <button type="button" @click="getMerName(search)" class="search">查找</button>
     </div>
-    <el-table :data="tableData" style="width: 100%" max-height="400">
+    <el-table :data="tableData" style="width: 100%" max-height="390">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -62,7 +62,7 @@
       <el-table-column label="手机" prop="tel" align="center"></el-table-column>
       <el-table-column label="操作" prop="operation" align="center">
         <template slot-scope="scope">
-            <el-button size="mini" type="danger" @click="dialogVisible = true,handleDelete(scope.row)">取消商家认证</el-button>
+            <el-button size="mini" class="cancel" type="primary" @click="dialogVisible = true,handleDelete(scope.row)">取消商家认证</el-button>
         </template>       
       </el-table-column>
     </el-table>
@@ -75,11 +75,15 @@
         </span>
     </el-dialog>
     <!-- 分页 -->
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="1000">
-    </el-pagination>
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-size="100"
+        layout="prev, pager, next, jumper"
+        :total="1000"><!-- total:总共数据  page-size:每页显示条目个数    :current-page.sync="currentPage"当前所在的页码-->
+      </el-pagination>
   </div>
 </template>
 
@@ -130,7 +134,8 @@ export default {
             shop: "王小虎夫妻店",
             shopId: "10333"
             }
-        ]
+        ],
+        currentPage: 5,/* 当前页码 */
     };
   },
    methods: {
@@ -147,12 +152,18 @@ export default {
       },
       getMerName(merName) {/* 根据名字查找商家 */
         console.log(merName);
+      },
+      handleSizeChange(val) {/* 每页多少条数据 */
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {/* 获取当前页码 */
+        console.log(`当前页: ${val}`);
       }
     }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .el-pagination {/* 设置分页的定位 */
     position: absolute;
     bottom: 40px;
@@ -185,11 +196,7 @@ export default {
         background-color: rgba(64, 160, 255, 0.315);
     }
 }
-.el-table th {
-    background: #99a9bf;
-    color: white;
-}
-.el-button--danger {
+/* .cancel {
     color: #FFF;
     background-color: #409EFF;
     border-color: #409EFF;
@@ -197,8 +204,14 @@ export default {
     &:hover {
         color: #606266;
         background-color: rgba(64, 160, 255, 0.315);
+        border-color: rgba(64, 160, 255, 0.315);
     }
-}
+    &:visited {
+      color: #FFF;
+      background-color: #409EFF;
+      border-color: #409EFF;
+    }
+} */
 .search {
     display: inline-block;
     line-height: 1;
@@ -242,5 +255,15 @@ export default {
     border: 1px solid #409EFF;
   }
   margin-bottom: 10px;
+}
+.el-form--inline .el-form-item__label {
+    float: none;
+    display: inline-block;
+    color: black;
+    font-size: 16px;
+}
+.el-table th {
+    background: white;
+    color: #99a9bf;
 }
 </style>
