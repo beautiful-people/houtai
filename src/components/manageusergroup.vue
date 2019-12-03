@@ -1,7 +1,7 @@
 <template>
     <div class="manageusergroup">
         <div class="search-content">
-            <input type="text" v-model="search" placeholder="请输入商家的姓名进行查找"> 
+            <input type="text" v-model="search" placeholder="请输入管理员的姓名进行查找"> 
             <button type="button" @click="getMerName(search)" class="search">查找</button>
         </div>
         <el-table :data="tableData" style="width: 100%">
@@ -11,7 +11,7 @@
             <el-table-column lign="right" align="center" label="操作">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="mini" type="danger" @click="open(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" type="danger" @click="open(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -50,23 +50,30 @@ export default {
       /* handleDelete(index, row) {
         console.log(index, row);
       }, */
-      open(index, row) {//删除按钮
-      console.log(index,row)
-        this.$confirm('是否删除该管理员?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+      open(row) {//点击删除按钮打开确定对话框
+      console.log(row.accId);//row.accId
+      // let that = this;
+      this.$confirm('是否删除该管理员?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+        })/* .then(() => {
+          that.$ajax.post('/',
+          {})
+          .then(res => {
+            if(res.data.code === 1){
+              that.$message({
+                type: 'success',
+                message: '删除成功!'
+                })
+            }
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
           });          
-        });
+        }); */
       }
     },
 }

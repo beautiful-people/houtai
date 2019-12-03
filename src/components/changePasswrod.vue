@@ -71,9 +71,17 @@ export default {
     },
     methods: {
       submitForm(formName,checkPass) {
-            console.log(checkPass);//获取输入的密码
-            var accountId = sessionStorage.getItem("accountId");
-            console.log(accountId);
+        console.log(checkPass);//获取输入的密码
+        this.axios
+        .post("/test", {
+          accPwd: checkPass
+        })
+        .then(res => {
+          console.log(res.data);          
+        })
+        .catch(err => {
+          console.log(err);
+        });
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

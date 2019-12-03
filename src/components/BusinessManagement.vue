@@ -1,6 +1,10 @@
 <template>
   <div class="BusinessManagement">
     <div class="search-content">
+      <span>请选择服务省份区域：</span>
+      <select class="merServeArea" @change="getProName($event)">
+        <option v-for="item in provinceList" :key="item.admId" :v-model="merProName" :value="item.proName">{{item.proName}}</option>
+      </select>
       <input type="text" v-model="search" placeholder="请输入商家的姓名进行查找"> 
       <button type="button" @click="getMerName(search)" class="search">查找</button>
     </div>
@@ -8,44 +12,41 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="商家注册名">
-              <span>{{ props.row.name }}</span>
-            </el-form-item>
             <el-form-item label="联系人">
-              <span>{{ props.row.people }}</span>
+              <span>{{ props.row.merLinkman }}</span>
             </el-form-item>
             <el-form-item label="手机">
-              <span>{{ props.row.tel }}</span>
+              <span>{{ props.row.merPhone }}</span>
             </el-form-item>
             <el-form-item label="商家全称">
-              <span>{{ props.row.shopId }}</span>
+              <span>{{ props.row.merName }}</span>
             </el-form-item>
             <el-form-item label="服务区域">
-              <span>{{ props.row.category }}</span>
+              <span>{{ props.row.merServeArea }}</span>
             </el-form-item>
             <el-form-item label="业务范围">
-              <span>{{ props.row.address }}</span>
+              <span>{{ props.row.merCoverage }}</span>
             </el-form-item>
             <el-form-item label="承接价位">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.merPrice }}</span>
             </el-form-item>
             <el-form-item label="行业库">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.merIndustry }}</span>
             </el-form-item>
             <el-form-item label="经营模式">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.merPattern }}</span>
             </el-form-item>
             <el-form-item label="商家性质">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.merNature }}</span>
             </el-form-item>
             <el-form-item label="注册资本">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.merAsset }}</span>
             </el-form-item>
             <el-form-item label="详细地址">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.merAddress }}</span>
             </el-form-item>
             <el-form-item label="商家简介">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.merSynopsis }}</span>
             </el-form-item>
             <!-- <template slot-scope="props">
                 <el-button size="mini" type="danger" @click="handleDelete(props.$index, props.row)">Delete</el-button>
@@ -56,10 +57,10 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="商家 ID" prop="id" align="center"></el-table-column>
-      <el-table-column label="商家注册名" prop="name" align="center"></el-table-column>
-      <el-table-column label="联系人" prop="people" align="center"></el-table-column>
-      <el-table-column label="手机" prop="tel" align="center"></el-table-column>
+      <el-table-column label="商家 ID" prop="merId" align="center"></el-table-column>
+      <el-table-column label="商家全称" prop="merName" align="center"></el-table-column>
+      <el-table-column label="联系人" prop="merLinkman" align="center"></el-table-column>
+      <el-table-column label="手机" prop="merPhone" align="center"></el-table-column>
       <el-table-column label="操作" prop="operation" align="center">
         <template slot-scope="scope">
             <el-button size="mini" class="cancel" type="primary" @click="dialogVisible = true,handleDelete(scope.row)">取消商家认证</el-button>
@@ -71,7 +72,7 @@
         <span class="span">是否取消当前商家认证？</span>
         <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false" class="sure">确 定</el-button>
+            <el-button type="primary" @click="Deauthentication(),dialogVisible = false" class="sure">确 定</el-button>
         </span>
     </el-dialog>
     <!-- 分页 -->
@@ -80,9 +81,9 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-size="100"
+        :page-size="pageSize"
         layout="prev, pager, next, jumper"
-        :total="1000"><!-- total:总共数据  page-size:每页显示条目个数    :current-page.sync="currentPage"当前所在的页码-->
+        :total="totalPage"><!-- total:总共数据  page-size:每页显示条目个数    :current-page.sync="currentPage"当前所在的页码-->
       </el-pagination>
   </div>
 </template>
@@ -93,55 +94,37 @@ export default {
   data() {
     return {
         dialogVisible: false,
-        search: "",
-        admId:"",
-        tableData: [
-            {
-            id: "12987122",
-            name: "好滋好味鸡蛋仔",
-            category: "江浙小吃、小吃零食",
-            desc: "荷兰优质淡奶，奶香浓而不腻",
-            address: "上海市普陀区真北路",
-            shop: "王小虎夫妻店",
-            shopId: "10333",
-            tel:"11111111111",
-            people:"大王"
-            },
-            {
-            id: "12987123",
-            name: "好滋好味鸡蛋仔",
-            category: "江浙小吃、小吃零食",
-            desc: "荷兰优质淡奶，奶香浓而不腻",
-            address: "上海市普陀区真北路",
-            shop: "王小虎夫妻店",
-            shopId: "10333"
-            },
-            {
-            id: "12987125",
-            name: "好滋好味鸡蛋仔",
-            category: "江浙小吃、小吃零食",
-            desc: "荷兰优质淡奶，奶香浓而不腻",
-            address: "上海市普陀区真北路",
-            shop: "王小虎夫妻店",
-            shopId: "10333"
-            },
-            {
-            id: "12987126",
-            name: "好滋好味鸡蛋仔",
-            category: "江浙小吃、小吃零食",
-            desc: "荷兰优质淡奶，奶香浓而不腻",
-            address: "上海市普陀区真北路",
-            shop: "王小虎夫妻店",
-            shopId: "10333"
-            }
-        ],
-        currentPage: 5,/* 当前页码 */
+        search: "",//商家名字
+        accId:"",
+        tableData: [],
+        currentPage: 1,/* 当前页码 */
+        totalPage:0,//获取数据的总条数
+        pageSize:3,
+        merProName:"",//服务区域
+        provinceList:[],
+        /* proName:""//超级管理员选择的服务区域 */
     };
   },
+  mounted() {
+      this.getData();
+    },
    methods: {
-      handleDelete(row) {/* 取消商家认证按钮,获取id值，并向服务器传送id值 */
-        console.log(row.id);
-        this.admId = row.id;
+      handleDelete(row) {/* 取消商家认证按钮,获取id值 */
+        console.log(row.accId);
+        this.accId = row.accId;        
+      },
+      Deauthentication() {/* 点击确定按钮，向服务器传送id值，通过商家认证 */
+        this.axios
+        .post("/updateMerchant", {
+          merId:this.accId
+        })
+        .then(res => {
+          console.log(res.data.code);
+          this.getData();
+        })
+        .catch(err => {
+          console.log(err);
+        });
       },
       handleClose(done) {/* 取消商家认证模态框的关闭 */
         this.$confirm('确认关闭？')
@@ -152,13 +135,93 @@ export default {
       },
       getMerName(merName) {/* 根据名字查找商家 */
         console.log(merName);
+        this.axios
+        .post("/showMerchant", {
+          merProName: this.merProName,//服务区域
+          merName:this.search,
+          currentPage: this.currentPage,//当前页
+          pageSize:this.pageSize,//每页显示的条数
+        })
+        .then(res => {
+          console.log(res.data);
+          this.tableData =  res.data.data.merchantList;
+          /* console.log(this.tableData); */
+          this.totalPage = res.data.data.page.totalCount;
+          /* console.log(this.totalPage); */
+        })
+        .catch(err => {
+          console.log(err);
+        });
       },
       handleSizeChange(val) {/* 每页多少条数据 */
         console.log(`每页 ${val} 条`);
       },
-      handleCurrentChange(val) {/* 获取当前页码 */
-        console.log(`当前页: ${val}`);
+      handleCurrentChange() {/* 获取当前页码 */
+        this.axios
+        .post("/showMerchant", {
+          merProName: this.merProName,//服务区域
+          merName:this.search,
+          currentPage: this.currentPage,//当前页
+          pageSize:this.pageSize,//每页显示的条数
+          proName:this.proName
+        })
+        .then(res => {
+          /* console.log(res.data); */
+          this.tableData =  res.data.data.merchantList;
+          /* console.log(this.tableData); */
+          this.totalPage = res.data.data.page.totalCount;
+          /* console.log(this.totalPage); */
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      },
+      getProName(e) {
+        /* console.log(e.target.value); */
+        this.merProName = e.target.value;
+        this.axios
+        .post("/showMerchant", {
+          merProName: this.merProName,//服务区域
+          merName:this.search,
+          currentPage: this.currentPage,//当前页
+          pageSize:this.pageSize,//每页显示的条数
+        })
+        .then(res => {
+          /* console.log(res.data); */
+          this.tableData =  res.data.data.merchantList;
+          /* console.log(this.tableData); */
+          this.totalPage = res.data.data.page.totalCount;
+          /* console.log(this.totalPage);
+          console.log(this.merProName) */
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      },
+      getData() {
+        this.axios
+        .post("/showMerchant", {
+          merProName: this.merProName,//服务区域
+          merName:this.search,
+          currentPage: this.currentPage,//当前页
+          pageSize:this.pageSize,//每页显示的条数
+        })
+        .then(res => {
+          /* console.log('分页数据',res.data); */
+          this.tableData =  res.data.data.merchantList;
+          /* console.log(this.tableData); */
+          this.totalPage = res.data.data.page.totalCount;//获取数据的总条数
+          /* console.log(this.totalPage);
+          console.log(res.data.data.provinceList) */
+          this.provinceList = res.data.data.provinceList;
+        })
+        .catch(err => {
+          console.log(err);
+        });
       }
+    },
+    created() {
+         
     }
 };
 </script>
@@ -265,5 +328,14 @@ export default {
 .el-table th {
     background: white;
     color: #99a9bf;
+}
+.merServeArea {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 11px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #409EFF;
+    margin-right: 40px;
 }
 </style>
