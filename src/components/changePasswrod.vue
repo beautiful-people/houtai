@@ -73,14 +73,23 @@ export default {
       submitForm(formName,checkPass) {
         console.log(checkPass);//获取输入的密码
         this.axios
-        .post("/test", {
+        .post("/ResetAdministratorPasswords", {
           accPwd: checkPass
         })
         .then(res => {
-          console.log(res.data);          
+          console.log(res.data.code);
+          if(res.data.code == '200') {
+            this.open2();
+          }    
         })
         .catch(err => {
           console.log(err);
+        });
+      },
+       open2() {
+        this.$message({
+          message: '密码修改成功',
+          type: 'success'
         });
       },
       resetForm(formName) {
