@@ -1,23 +1,23 @@
 <template>
   <div class="peakfire">
     <div class="search-content">
-      <input type="text" v-model="search" placeholder="请输入商家的姓名进行查找" />
+      <input type="text" v-model="search" placeholder="请输入商家名称" />
       <button type="button" @click="getMerName(search)" class="search">查找</button>
     </div>
     <el-table :data="tableData" style="width: 100%" max-height="390">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="联系人">
-              <span>{{ props.row.merLinkman }}</span>
+            <el-form-item label="商家">
+              <span>{{ props.row.sendUserName }}</span>
             </el-form-item>
-            <el-form-item label="手机">
-              <span>{{ props.row.merPhone }}</span>
+            <el-form-item label="商家ID">
+              <span>{{ props.row.sendUserId }}</span>
             </el-form-item>
-            <el-form-item label="商家全称">
-              <span>{{ props.row.merName }}</span>
+            <el-form-item label="商家名称">
+              <span>{{ props.row.sendRole }}</span>
             </el-form-item>
-            <el-form-item label="服务区域">
+            <!-- <el-form-item label="服务区域">
               <span>{{ props.row.merServeArea }}</span>
             </el-form-item>
             <el-form-item label="业务范围">
@@ -43,31 +43,76 @@
             </el-form-item>
             <el-form-item label="商家简介">
               <span>{{ props.row.merSynopsis }}</span>
-            </el-form-item>
-            <!-- <template slot-scope="props">
-                <el-button size="mini" type="danger" @click="handleDelete(props.$index, props.row)">Delete</el-button>
-            </template>-->
-            <!-- <el-form-item label="操作">
-                <el-button size="mini" type="danger" @click="handleDelete(props.$index, props.row)">Delete</el-button>
-            </el-form-item>-->
+            </el-form-item> -->
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="商家 ID" prop="merId" align="center"></el-table-column>
-      <el-table-column label="商家全称" prop="merName" align="center"></el-table-column>
-      <el-table-column label="联系人" prop="merLinkman" align="center"></el-table-column>
-      <el-table-column label="手机" prop="merPhone" align="center"></el-table-column>
+      <el-table-column label="状态" prop="messageStatus" align="center"></el-table-column>
+      <el-table-column label="商家名称" prop="sendRole" align="center"></el-table-column>
+      <el-table-column label="消息内容" prop="messageContent" align="center"></el-table-column>
+      <el-table-column label="消息时间" prop="messageDate" align="center"></el-table-column>      
       <el-table-column label="操作" prop="operation" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
             class="cancel"
             type="primary"
-            @click="dialogVisible = true,handleDelete(scope.row)"
-          >取消商家认证</el-button>
+            @click="particulars = true,handleDelete(scope.row)"
+          >查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 查看商家认证按钮的模态框 -->
+    <el-dialog
+      title="详情"
+      :visible.sync="particulars"
+      width="30%"
+      :before-close="handleClose"
+      class="model"
+    >
+      <ul class="particulars">
+        <li>{{merchant.accId}}</li>
+        <li>{{merchant.account}}</li>
+        <li>{{merchant.city}}</li>
+        <li>{{merchant.credentials}}</li>
+        <li>{{merchant.decschemeList}}</li>
+        <li>{{merchant.merAbbr}}</li>
+        <li>{{merchant.merAddress}}</li>
+        <li>{{merchant.merAppo}}</li>
+        <li>{{merchant.merAptitude}}</li>
+        <li>{{merchant.merAsset}}</li>
+        <li>{{merchant.merCityName}}</li>
+        <li>{{merchant.merCoverage}}</li>
+        <li>{{merchant.merDisName}}</li>
+        <li>{{merchant.merDuty}}</li>
+        <li>{{merchant.merFourPhone}}</li>
+        <li>{{merchant.merFreeserve}}</li>
+        <li>{{merchant.merId}}</li>
+        <li>{{merchant.merIndustry}}</li>
+        <li>{{merchant.merLinkman}}</li>
+        <li>{{merchant.merName}}</li>
+        <li>{{merchant.merNature}}</li>
+        <li>{{merchant.merPattern}}</li>
+        <li>{{merchant.merPhone}}</li>
+        <li>{{merchant.merPrice}}</li>
+        <li>{{merchant.merProName}}</li>
+        <li>{{merchant.merProServe}}</li>
+        <li>{{merchant.merRemind}}</li>
+        <li>{{merchant.merReputation}}</li>
+        <li>{{merchant.merServeArea}}</li>
+        <li>{{merchant.merSynopsis}}</li>
+        <li>{{merchant.merType}}</li>
+        <li>{{merchant.merfourSwitch}}</li>
+        <li>{{merchant.province}}</li>
+        <li>{{merchant.userDate}}</li>
+      </ul>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="particulars = false">取消认证</el-button>
+        <el-button type="primary" @click="particulars = false,dialogVisible = true" class="sure">通过认证</el-button>
+      </span>
+    </el-dialog>
+
     <!-- 通过商家认证按钮的模态框 -->
     <el-dialog
       title="注意"
@@ -79,7 +124,7 @@
       <span class="span">是否通过当前商家认证？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false" class="sure">确 定</el-button>
+        <el-button type="primary" @click="dialogVisible = false,Deauthentication()" class="sure">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -104,14 +149,16 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      particulars:false,
       search: "", //商家名字
-      accId: "",
+      messageInfoId: "",
+      messageId:"",
       tableData: [],
       currentPage: 1 /* 当前页码 */,
       totalPage: 0, //获取数据的总条数
       pageSize: 3,
-      merProName: "", //服务区域
-      provinceList: []
+      provinceList: [],
+      merchant:{}//认证详情
     };
   },
   mounted() {
@@ -119,8 +166,21 @@ export default {
   },
   methods: {
     handleDelete(row) {      /* 商家认证按钮,获取id值，并向服务器传送id值 */
-      console.log(row.accId);
-      this.accId = row.accId;
+      console.log(row.messageInfoId);
+      this.messageInfoId = row.messageInfoId;
+      this.messageId = row.messageId;
+      this.axios
+        .post("/peShowMerchantInfos", {
+          messageInfoId: this.messageInfoId
+        })
+        .then(res => {
+          console.log('认证详情',res.data.data.merchant);
+          this.merchant = res.data.data.merchant;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
     },
     handleClose(done) {      /* 取消商家认证模态框的关闭 */
       this.$confirm("确认关闭？")
@@ -131,11 +191,14 @@ export default {
     },
     Deauthentication() {      /* 点击确定按钮，向服务器传送id值，通过商家认证 */
       this.axios
-        .post("/updateMerchant", {
-          merId: this.accId
+        .post("/peMessageOperation", {
+          merId: this.merchant.merId,
+          messageId:this.messageId,
+          operation:"yes"
         })
         .then(res => {
           console.log(res.data.code);
+          this.open2();
           this.getData();
         })
         .catch(err => {
@@ -144,8 +207,8 @@ export default {
     },
     getMerName(merName) {      /* 根据名字查找商家 */
       console.log(merName);
-      this.axios
-        .post("/showMerchant", {
+      /* this.axios
+        .post("/peShowMessages", {
           merProName: this.merProName, //服务区域
           merName: this.search,
           currentPage: this.currentPage, //当前页
@@ -153,76 +216,77 @@ export default {
         })
         .then(res => {
           console.log(res.data);
-          this.tableData = res.data.data.merchantList;
+          this.tableData = res.data.data.merchantList; */
           /* console.log(this.tableData); */
-          this.totalPage = res.data.data.page.totalCount;
+          // this.totalPage = res.data.data.page.totalCount;
           /* console.log(this.totalPage); */
-        })
+        /* })
         .catch(err => {
           console.log(err);
-        });
+        }); */
     },
     handleSizeChange(val) {      /* 每页多少条数据 */
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange() {      /* 获取当前页码 */
-      this.axios
-        .post("/showMerchant", {
-          merProName: this.merProName, //服务区域
-          merName: this.search,
-          currentPage: this.currentPage, //当前页
-          pageSize: this.pageSize, //每页显示的条数
-          proName: this.proName
-        })
-        .then(res => {
-          /* console.log(res.data); */
-          this.tableData = res.data.data.merchantList;
-          /* console.log(this.tableData); */
-          this.totalPage = res.data.data.page.totalCount;
-          /* console.log(this.totalPage); */
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      // this.axios
+      //   .post("/peShowMessages", {
+      //     merProName: this.merProName, //服务区域
+      //     merName: this.search,
+      //     currentPage: this.currentPage, //当前页
+      //     pageSize: this.pageSize, //每页显示的条数
+      //     proName: this.proName
+      //   })
+      //   .then(res => {
+      //     /* console.log(res.data); */
+      //     this.tableData = res.data.data.merchantList;
+      //     /* console.log(this.tableData); */
+      //     this.totalPage = res.data.data.page.totalCount;
+      //     /* console.log(this.totalPage); */
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     getProName(e) {
-      /* console.log(e.target.value); */
-      this.merProName = e.target.value;
-      this.axios
-        .post("/showMerchant", {
-          merProName: this.merProName, //服务区域
-          merName: this.search,
-          currentPage: this.currentPage, //当前页
-          pageSize: this.pageSize //每页显示的条数
+      console.log(e.target.value);
+      // this.merProName = e.target.value;
+      // this.axios
+      //   .post("/peShowMessages", {
+      //     /* merProName: this.merProName, //服务区域
+      //     merName: this.search, */
+      //     currentPage: this.currentPage, //当前页
+      //     pageSize: this.pageSize //每页显示的条数
+      //   })
+      //   .then(res => {
+      //     /* console.log(res.data); */
+      //     this.tableData = res.data.data.merchantList;
+      //     /* console.log(this.tableData); */
+      //     this.totalPage = res.data.data.page.totalCount;
+      //     /* console.log(this.totalPage);
+      //     console.log(this.merProName) */
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
+    },
+    open2() {
+        this.$message({
+          message: '认证成功',
+          type: 'success'
         })
-        .then(res => {
-          /* console.log(res.data); */
-          this.tableData = res.data.data.merchantList;
-          /* console.log(this.tableData); */
-          this.totalPage = res.data.data.page.totalCount;
-          /* console.log(this.totalPage);
-          console.log(this.merProName) */
-        })
-        .catch(err => {
-          console.log(err);
-        });
     },
     getData() {
       this.axios
-        .post("/showMerchant", {
-          merProName: this.merProName, //服务区域
-          merName: this.search,
+        .post("/peShowMessages", {
+          /* merProName: this.merProName, //服务区域
+          merName: this.search, */
           currentPage: this.currentPage, //当前页
           pageSize: this.pageSize //每页显示的条数
         })
         .then(res => {
-          /* console.log('分页数据',res.data); */
-          this.tableData = res.data.data.merchantList;
-          /* console.log(this.tableData); */
-          this.totalPage = res.data.data.page.totalCount; //获取数据的总条数
-          /* console.log(this.totalPage);
-          console.log(res.data.data.provinceList) */
-          this.provinceList = res.data.data.provinceList;
+          console.log('认证数据',res.data.data.messageList);
+          this.tableData = res.data.data.messageList;
         })
         .catch(err => {
           console.log(err);
@@ -322,5 +386,11 @@ export default {
     border: 1px solid #409eff;
   }
   margin-bottom: 10px;
+}
+.particulars li {
+  list-style:none
+}
+.particulars,li {
+  float: left;
 }
 </style>

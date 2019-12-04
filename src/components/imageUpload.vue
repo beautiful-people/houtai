@@ -22,16 +22,16 @@
             <el-upload
             class="upload-demo"
             ref="upload"
-            action="api/addImagsAndCollections"
+            action="addImagsAndCollections"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
             :auto-upload="false"
-            :data="resData"
             :on-change="imgBroadcastChange"
             :onSuccess="uploadSuccess"
             :headers="headers"
             list-type="picture-card"
+            multiple
             name="file">
                 <el-button slot="trigger" size="small" type="primary" class="getImg">选取图片集</el-button>
                 <el-button style="margin-left: 10px;" size="small" type="success" @click="startUpload()">上传到服务器</el-button>
@@ -84,36 +84,42 @@ export default {
         headers:{
             "Content-Type":"multipart/form-data"
         },
-        file:"",
-        fileName:"",
+        file:[],
+        /* fileName:"", */
         resData:{}
       };
     },
     methods: {
       imgBroadcastChange(file,fileList) {
-          this.file = file.raw;
-          this.fileName = file.name;
-          console.log(fileList)
+          this.file.push(file.raw);
+          /* this.fileName = file.name; */
+          console.log(fileList);
+          console.log(this.file)
       },
       uploadSuccess(res, file) {
           console.log(res);
           console.log(file);
       },
       startUpload() {
-          this.resData = {
-                "styles":this.typeValue,
-                "styleType":this.styleValue,
-                "imgsContext":this.content
-          }
           const formData = new FormData();
-          formData.append("styles",this.resData.typeValue);
-          formData.append("styleType",this.resData.styleValue);
-          formData.append("imgsContext",this.resData.content);
-          formData.append('file', this.file);
+          formData.append("styles",this.typeValue);
+          formData.append("styleType",this.styleValue);
+          formData.append("imgsContext",this.content);
+          /* formData.append("fileName",this.fileName); */
+          for(let i = 0;i<this.file.length;i++) {
+              formData.append('file', this.file[i]);
+          }
           this.axios
-            .post(" /addImagsAndCollections",formData)
+            .post("/addImagsAndCollections",formData)
             .then(res => {
             console.log(res.data);
+            if(res.data.code == '200') {
+                this.open();
+                this.typeValue="";
+                this.styleValue="";
+                this.content="";
+                this.fileList=[];
+            }
             })
             .catch(err => {
             console.log(err);
@@ -133,7 +139,13 @@ export default {
                     this.styleList = item.styleName;
                 }
             })
-      }
+      },
+      open() {
+        this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
+      },
     },
     created() {
         this.typeList = product;
