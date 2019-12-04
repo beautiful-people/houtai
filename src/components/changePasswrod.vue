@@ -80,6 +80,8 @@ export default {
           console.log(res.data.code);
           if(res.data.code == '200') {
             this.open2();
+            this.pass="";
+            this.checkPass="";
           }    
         })
         .catch(err => {

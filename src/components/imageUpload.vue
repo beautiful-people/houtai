@@ -14,22 +14,29 @@
                 </el-option>
             </el-select>
         </div>
+        <div class="describe">
+            <span>请输入图片描述:</span><br>
+            <textarea placeholder="请输入图片描述" v-model="content"></textarea>
+        </div>
         <form>
             <el-upload
             class="upload-demo"
             ref="upload"
-            action="/api/test"
+            action="api/addImagsAndCollections"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
             :auto-upload="false"
+            :data="resData"
+            :on-change="imgBroadcastChange"
+            :onSuccess="uploadSuccess"
+            :headers="headers"
             list-type="picture-card"
             name="file">
                 <el-button slot="trigger" size="small" type="primary" class="getImg">选取图片集</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="startUpload()">上传到服务器</el-button>
             </el-upload>
-        </form>
-        
+        </form>        
     </div>
 </template>
 
@@ -73,11 +80,44 @@ export default {
         styleList:"",//样式列表
         typeValue:"",//选取类型的value值
         styleValue:"",//选取风格的value值
+        content:"",
+        headers:{
+            "Content-Type":"multipart/form-data"
+        },
+        file:"",
+        fileName:"",
+        resData:{}
       };
     },
     methods: {
-      submitUpload() {
-        this.$refs.upload.submit();
+      imgBroadcastChange(file,fileList) {
+          this.file = file.raw;
+          this.fileName = file.name;
+          console.log(fileList)
+      },
+      uploadSuccess(res, file) {
+          console.log(res);
+          console.log(file);
+      },
+      startUpload() {
+          this.resData = {
+                "styles":this.typeValue,
+                "styleType":this.styleValue,
+                "imgsContext":this.content
+          }
+          const formData = new FormData();
+          formData.append("styles",this.resData.typeValue);
+          formData.append("styleType",this.resData.styleValue);
+          formData.append("imgsContext",this.resData.content);
+          formData.append('file', this.file);
+          this.axios
+            .post(" /addImagsAndCollections",formData)
+            .then(res => {
+            console.log(res.data);
+            })
+            .catch(err => {
+            console.log(err);
+            });
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -130,5 +170,29 @@ export default {
 .imageUpload {
     margin-left: 50px;
     margin-top: 30px;
+}
+.describe {
+    width: 100%;
+    margin-top: 10px;
+    textarea {
+        -webkit-appearance: none;
+        background-color: #FFF;
+        background-image: none;
+        border-radius: 4px;
+        border: 1px solid #DCDFE6;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        color: #606266;
+        display: inline-block;
+        font-size: inherit;
+        height: 100px;
+        outline: 0;
+        padding: 0 15px;
+        -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+        transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+        width: 300px;
+        margin-left: 11px;
+        margin-top: 10px;
+    }
 }
 </style>
