@@ -11,7 +11,7 @@
       <div class="content">
         <div class="left-nav">
           <router-link to="/home/BusinessManagement">商家管理</router-link>
-          <router-link to="/home/manageusergroup">管理员</router-link><!--  v-if="role" -->
+          <router-link to="/home/manageusergroup" v-if="role">管理员</router-link><!--  v-if="role" -->
           <router-link to="/home/TheTenderReview">招标审核</router-link>
           <router-link to="/home/imageUpload">图片上传</router-link>
           <router-link to="/home/peakfire">商家认证</router-link>
@@ -38,27 +38,24 @@ export default {
   },
   methods: {
     quit () {
-      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem("accountId")
+      sessionStorage.removeItem("power");
+      sessionStorage.removeItem("admArea");
       this.$router.replace('/')
     }
   },
   created() {
-    /* this.axios.get('/users') 
-      .then(res => { */
         this.accountId = sessionStorage.getItem("accountId")
         this.admArea = sessionStorage.getItem("admArea")
         /* console.log('获取用户权限：', res.data.power) */
-        if(sessionStorage.getItem("power")== -1) {
+        if(sessionStorage.getItem("power") == -1) {
           this.power = "超级管理员";
           this.role = true
-        } else {
+        } else if(sessionStorage.getItem("power") == 1){
           this.power = "管理员";
           this.role = false
         }
-      /* })
-      .catch(err => {
-        console.log(err)
-      }) */
   }    
 };
 </script>

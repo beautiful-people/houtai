@@ -146,39 +146,39 @@
       class="model"
     >
       <ul class="particulars">
-        <li>账户Id:{{merchant.accId}}</li>
-        <li>账户对象:{{merchant.account}}</li>
-        <li>省份名:{{merchant.merProName}}</li>
-        <li>是否认证{{merchant.credentials}}</li>
-        <li>商家简称:{{merchant.merAbbr}}</li>
-        <li>详细地址:{{merchant.merAddress}}</li>
-        <li>是否开通预约功能:{{merchant.merAppo}}</li>
-        <li>资质:{{merchant.merAptitude}}</li>
-        <li>注册资本:{{merchant.merAsset}}</li>
-        <li>市名:{{merchant.merCityName}}</li>
-        <li>业务范围:{{merchant.merCoverage}}</li>
-        <li>区县名:{{merchant.merDisName}}</li>
-        <li>职务:{{merchant.merDuty}}</li>
-        <li>400电话:{{merchant.merFourPhone}}</li>
-        <li>免费服务:{{merchant.merFreeserve}}</li>
-        <li>商家Id{{merchant.merId}}</li>
-        <li>行业库{{merchant.merIndustry}}</li>
-        <li>联系人{{merchant.merLinkman}}</li>
-        <li>商家全称:{{merchant.merName}}</li>
-        <li>商家性质:{{merchant.merNature}}</li>
-        <li>经营模式:{{merchant.merPattern}}</li>
-        <li>手机:{{merchant.merPhone}}</li>
-        <li>承接价位:{{merchant.merPrice}}</li>
-        <li>省份名:{{merchant.merProName}}</li>
-        <li>主营产品或服务:{{merchant.merProServe}}</li>
-        <li>是否开通最新招标提醒{{merchant.merRemind}}</li>
-        <li>信誉分:{{merchant.merReputation}}</li>
-        <li>服务区域:{{merchant.merServeArea}}</li>
-        <li>商家简介:{{merchant.merSynopsis}}</li>
-        <li>商家类型{{merchant.merType}}</li>
-        <li>400电话开关:{{merchant.merfourSwitch}}</li>
-        <li>省对象:{{merchant.province}}</li>
-        <li>注册时间:{{merchant.userDate}}</li>
+        <li><span>账户Id:</span>{{merchant.accId}}</li>
+        <li><span>账户对象:</span>{{merchant.account}}</li>
+        <li><span>省份名:</span>{{merchant.merProName}}</li>
+        <li><span>是否认证</span>{{merchant.credentials}}</li>
+        <li><span>商家简称:</span>{{merchant.merAbbr}}</li>
+        <li><span>详细地址:</span>{{merchant.merAddress}}</li>
+        <li><span>是否开通预约功能:</span>{{merchant.merAppo}}</li>
+        <li><span>资质:</span>{{merchant.merAptitude}}</li>
+        <li><span>注册资本:</span>{{merchant.merAsset}}</li>
+        <li><span>市名:</span>{{merchant.merCityName}}</li>
+        <li><span>业务范围:</span>{{merchant.merCoverage}}</li>
+        <li><span>区县名:</span>{{merchant.merDisName}}</li>
+        <li><span>职务:</span>{{merchant.merDuty}}</li>
+        <li><span>400电话:</span>{{merchant.merFourPhone}}</li>
+        <li><span>免费服务:</span>{{merchant.merFreeserve}}</li>
+        <li><span>商家Id:</span>{{merchant.merId}}</li>
+        <li><span>行业库:</span>{{merchant.merIndustry}}</li>
+        <li><span>联系人:</span>{{merchant.merLinkman}}</li>
+        <li><span>商家全称:</span>{{merchant.merName}}</li>
+        <li><span>商家性质:</span>{{merchant.merNature}}</li>
+        <li><span>经营模式:</span>{{merchant.merPattern}}</li>
+        <li><span>手机:</span>{{merchant.merPhone}}</li>
+        <li><span>承接价位:</span>{{merchant.merPrice}}</li>
+        <li><span>省份名:</span>{{merchant.merProName}}</li>
+        <li><span>主营产品或服务:</span>{{merchant.merProServe}}</li>
+        <li><span>是否开通最新招标提醒:</span>{{merchant.merRemind}}</li>
+        <li><span>信誉分:</span>{{merchant.merReputation}}</li>
+        <li><span>服务区域:</span>{{merchant.merServeArea}}</li>
+        <li><span>商家简介:</span>{{merchant.merSynopsis}}</li>
+        <li><span>商家类型</span>{{merchant.merType}}</li>
+        <li><span>400电话开关:</span>{{merchant.merfourSwitch}}</li>
+        <li><span>省对象:</span>{{merchant.province}}</li>
+        <li><span>注册时间:</span>{{getTime(merchant.userDate)}}</li>
       </ul>
       <span slot="footer" class="dialog-footer">
         <el-button @click="particulars = false">取消认证</el-button>
@@ -358,6 +358,46 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    getTime(time) {
+      /**
+       * 时间对象的格式化;
+       */
+      Date.prototype.format = function(format) {
+        /*
+         * eg:format="YYYY-MM-dd hh:mm:ss";
+         */
+        var o = {
+          "M+": this.getMonth() + 1, // month
+          "d+": this.getDate(), // day
+          "h+": this.getHours(), // hour
+          "m+": this.getMinutes(), // minute
+          "s+": this.getSeconds(), // second
+          "q+": Math.floor((this.getMonth() + 3) / 3), // quarter
+          S: this.getMilliseconds() // millisecond
+        };
+        if (/(y+)/.test(format)) {
+          format = format.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        }
+        for (var k in o) {
+          if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+          }
+        }
+        return format;
+      };
+      var jsDate = new Date(time).toLocaleDateString();
+      var date = jsDate.split("/");
+      var times = date.join("-");
+      return times
     }
   }
 };
@@ -454,10 +494,22 @@ export default {
   }
   margin-bottom: 10px;
 }
-.particulars li {
-  list-style:none
+.particulars {
+  width: 100%;
 }
 .particulars,li {
+  list-style:none
+}
+.particulars li {
   float: left;
+  width: 50%;
+}
+.particulars li span {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.el-dialog__wrapper {
+  height: 100vh;
 }
 </style>

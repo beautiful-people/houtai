@@ -111,26 +111,26 @@
       class="model"
     >
       <ul class="particulars">
-        <li>面积（平方米）：{{tender.area}}</li>
-        <li>项目名称：{{tender.calusename}}</li>
-        <li>投标公司要求：{{tender.compayRequest}}</li>
-        <li> 装修预算（万元）：{{tender.decorationBudget}}</li>
-        <li>户型结构：{{tender.familyStructure}}</li>
-        <li>装修招标详细要求：{{tender.fitmentRequest}}</li>
-        <li>房屋现状：{{tender.housingSituation}}</li>
-        <li>联系人：{{tender.linkMan}}</li>
-        <li>地点：{{tender.location}}</li>
-        <li>中标商家：{{tender.merId}}</li>
-        <li>用户：{{tender.merchant}}</li>
-        <li>在线工地：{{tender.onlinesites}}</li>
-        <li>联系方式：{{tender.phone}}</li>
-        <li>预计开工时间:{{tender.startTime}}</li>
-        <li>当前状态:{{tender.state}}</li>
-        <li>招标结束时间:{{tender.tenderEndTime}}</li>
-        <li>招标Id:{{tender.tenderId}}</li>
-        <li>招标编号:{{tender.tenderNum}}</li>
-        <li>招标开始时间:{{tender.tenderStartTime}}</li>
-        <li>工期:{{tender.timeForProject}}</li>
+        <li><span>面积（平方米）：</span>{{tender.area}}</li>
+        <li><span>项目名称：</span>{{tender.calusename}}</li>
+        <li><span>投标公司要求：</span>{{tender.compayRequest}}</li>
+        <li><span>装修预算（万元）：</span>{{tender.decorationBudget}}</li>
+        <li><span>户型结构：</span>{{tender.familyStructure}}</li>
+        <li><span>装修招标详细要求：</span>{{tender.fitmentRequest}}</li>
+        <li><span>房屋现状：</span>{{tender.housingSituation}}</li>
+        <li><span>联系人：</span>{{tender.linkMan}}</li>
+        <li><span>地点：</span>{{tender.location}}</li>
+        <li><span>中标商家：</span>{{tender.merId}}</li>
+        <li><span>用户：</span>{{tender.merchant}}</li>
+        <li><span>在线工地：</span>{{tender.onlinesites}}</li>
+        <li><span>联系方式：</span>{{tender.phone}}</li>
+        <li><span>预计开工时间:</span>{{getTime(tender.startTime)}}</li>
+        <li><span>当前状态:</span>{{tender.state}}</li>
+        <li><span>招标结束时间:</span>{{getTime(tender.tenderEndTime)}}</li>
+        <li><span>招标Id:</span>{{tender.tenderId}}</li>
+        <li><span>招标编号:</span>{{tender.tenderNum}}</li>
+        <li><span>招标开始时间:</span>{{getTime(tender.tenderStartTime)}}</li>
+        <li><span>工期:</span>{{tender.timeForProject}}</li>
       </ul>
       <span slot="footer" class="dialog-footer">
         <el-button @click="particulars = false">取消</el-button>
@@ -314,6 +314,46 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    getTime(time) {
+      /**
+       * 时间对象的格式化;
+       */
+      Date.prototype.format = function(format) {
+        /*
+         * eg:format="YYYY-MM-dd hh:mm:ss";
+         */
+        var o = {
+          "M+": this.getMonth() + 1, // month
+          "d+": this.getDate(), // day
+          "h+": this.getHours(), // hour
+          "m+": this.getMinutes(), // minute
+          "s+": this.getSeconds(), // second
+          "q+": Math.floor((this.getMonth() + 3) / 3), // quarter
+          S: this.getMilliseconds() // millisecond
+        };
+        if (/(y+)/.test(format)) {
+          format = format.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        }
+        for (var k in o) {
+          if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+          }
+        }
+        return format;
+      };
+      var jsDate = new Date(time).toLocaleDateString();
+      var date = jsDate.split("/");
+      var times = date.join("-");
+      return times
     }
   }
 };
@@ -411,5 +451,12 @@ export default {
 }
 .particulars,li {
   float: left;
+}
+.particulars li span {
+  font-size: 16px;
+  font-weight: 700;
+}
+.el-dialog__wrapper {
+  height: 100vh;
 }
 </style>

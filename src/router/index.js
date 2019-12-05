@@ -75,7 +75,7 @@ const router = new VueRouter({
 
 // 注册全局守卫
 // 在访问路由之前进行拦截
-/* router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   // 获取 token，登录的标识
   var token = sessionStorage.getItem("token")
 
@@ -90,6 +90,6 @@ const router = new VueRouter({
   } else {
     next() // 想去哪就去哪
   }
-}) */
+})
 
 export default router

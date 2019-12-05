@@ -32,17 +32,17 @@ export default {
       // this.$route：保存了当前路由信息
       console.log("登录");
       this.axios
-        .post("/login", {
+        .post("/login/loginAcc", {
           accName: this.username,
           accPwd: this.userpass
         })
         .then(res => {
           console.log(res.data);
-          /* if (res.data.code == "200") {
+          if (res.data.code == "200") {
             // var token = "njaksxbxkjasbkjcxasbjk" // 模拟后台返回的token
-            var token = res.data.token;
+            var token = res.data.account;
             sessionStorage.setItem("token", token);
-            var accountId = res.data.data.accountId;
+            var accountId = res.data.data.token;
             sessionStorage.setItem("accountId",accountId)
 
             var power = res.data.data.power;
@@ -56,7 +56,7 @@ export default {
 
           } else {
             console.log("登陆失败");
-          } */
+          }
         })
         .catch(err => {
           console.log(err);
