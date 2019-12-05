@@ -114,7 +114,7 @@ export default {
     },
    methods: {
       handleDelete(row) {/* 取消商家认证按钮,获取id值 */
-        console.log(row.accId);
+        // console.log(row.accId);
         this.accId = row.accId;        
       },
       Deauthentication() {/* 点击确定按钮，向服务器传送id值，通过商家认证 */
@@ -160,11 +160,11 @@ export default {
             }
           })
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.tableData =  res.data.data.merchantList;
-          /* console.log(this.tableData); */
+          // /* console.log(this.tableData); */
           this.totalPage = res.data.data.page.totalCount;
-          /* console.log(this.totalPage); */
+          // /* console.log(this.totalPage); */
         })
         .catch(err => {
           console.log(err);
@@ -189,18 +189,18 @@ export default {
             }
           })
         .then(res => {
-          /* console.log(res.data); */
+          // /* console.log(res.data); */
           this.tableData =  res.data.data.merchantList;
-          /* console.log(this.tableData); */
+          // /* console.log(this.tableData); */
           this.totalPage = res.data.data.page.totalCount;
-          /* console.log(this.totalPage); */
+          // /* console.log(this.totalPage); */
         })
         .catch(err => {
           console.log(err);
         });
       },
       getProName(e) {
-        /* console.log(e.target.value); */
+        // /* console.log(e.target.value); */
         this.merProName = e.target.value;
         this.currentPage=1;
         this.axios
@@ -217,12 +217,12 @@ export default {
             }
           })
         .then(res => {
-          /* console.log(res.data); */
+          // /* console.log(res.data); */
           this.tableData =  res.data.data.merchantList;
-          /* console.log(this.tableData); */
+          // /* console.log(this.tableData); */
           this.totalPage = res.data.data.page.totalCount;
-          /* console.log(this.totalPage);
-          console.log(this.merProName) */
+          // /* console.log(this.totalPage);
+          // console.log(this.merProName) */
         })
         .catch(err => {
           console.log(err);
@@ -243,12 +243,12 @@ export default {
             }
           })
         .then(res => {
-          /* console.log('分页数据',res.data); */
+          // /* console.log('分页数据',res.data); */
           this.tableData =  res.data.data.merchantList;
-          /* console.log(this.tableData); */
+          // /* console.log(this.tableData); */
           this.totalPage = res.data.data.page.totalCount;//获取数据的总条数
-          /* console.log(this.totalPage);
-          console.log(res.data.data.provinceList) */
+          // /* console.log(this.totalPage);
+          // console.log(res.data.data.provinceList) */
           this.provinceList = res.data.data.provinceList;
         })
         .catch(err => {

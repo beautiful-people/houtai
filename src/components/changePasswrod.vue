@@ -83,7 +83,7 @@ export default {
             }
           })
         .then(res => {
-          console.log(res.data.code);
+          // console.log(res.data.code);
           if(res.data.code == '200') {
             this.open2();
             this.resetForm();

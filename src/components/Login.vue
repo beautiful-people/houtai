@@ -30,7 +30,7 @@ export default {
     getLogin() {
       // console.log("访问查询参数：", this.$route.query.id);
       // this.$route：保存了当前路由信息
-      console.log("登录");
+      // console.log("登录");
       this.axios
         .post("/login/loginAcc", {
           accName: this.username,
@@ -38,7 +38,7 @@ export default {
         }
         )
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.code == "200") {
             // var token = "njaksxbxkjasbkjcxasbjk" // 模拟后台返回的token
             var token = res.data.data.token;
