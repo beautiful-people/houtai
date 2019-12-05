@@ -28,6 +28,7 @@
                 size="mini"
                 class="cancel"
                 type="primary"
+                :disabled="scope.row.messageStatus === '已读'"
                 @click="particulars = true,handleDelete(scope.row)"
               >查看详情</el-button>
             </template>
@@ -61,6 +62,7 @@
                 size="mini"
                 class="cancel"
                 type="primary"
+                :disabled="scope.row.messageStatus === '已读'"
                 @click="particulars = true,handleDelete(scope.row)"
               >查看详情</el-button>
             </template>
@@ -94,6 +96,7 @@
                 size="mini"
                 class="cancel"
                 type="primary"
+                :disabled="scope.row.messageStatus === '已读'"
                 @click="particulars = true,handleDelete(scope.row)"
               >查看详情</el-button>
             </template>
@@ -482,16 +485,21 @@ export default {
   }
   margin-bottom: 10px;
 }
-.particulars li {
-  list-style:none
+.particulars {
+  width: 100%;
 }
 .particulars,li {
+  list-style:none
+}
+.particulars li {
   float: left;
+  width: 50%;
 }
 .particulars li span {
   font-size: 16px;
   font-weight: 700;
 }
+
 .el-dialog__wrapper {
   height: 100vh;
 }

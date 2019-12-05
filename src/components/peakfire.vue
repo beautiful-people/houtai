@@ -32,6 +32,7 @@
                 size="mini"
                 class="cancel"
                 type="primary"
+                :disabled="scope.row.messageStatus === '已读'"
                 @click="particulars = true,handleDelete(scope.row)"
               >查看详情</el-button>
             </template>
@@ -65,6 +66,7 @@
                 size="mini"
                 class="cancel"
                 type="primary"
+                :disabled="scope.row.messageStatus === '已读'"
                 @click="particulars = true,handleDelete(scope.row)"
               >查看详情</el-button>
             </template>
@@ -98,6 +100,7 @@
                 size="mini"
                 class="cancel"
                 type="primary"
+                :disabled="scope.row.messageStatus === '已读'"
                 @click="particulars = true,handleDelete(scope.row)"
               >查看详情</el-button>
             </template>
