@@ -114,6 +114,7 @@ export default {
         this.accId = row.accId;        
       },
       Deauthentication() {/* 点击确定按钮，向服务器传送id值，通过商家认证 */
+      this.currentPage=1;
         this.axios
         .post("/updateMerchant", {
           merId:this.accId
@@ -134,6 +135,7 @@ export default {
           .catch(()=> {});
       },
       getMerName(merName) {/* 根据名字查找商家 */
+      this.currentPage=1;
         console.log(merName);
         this.axios
         .post("/showMerchant", {
@@ -179,6 +181,7 @@ export default {
       getProName(e) {
         /* console.log(e.target.value); */
         this.merProName = e.target.value;
+        this.currentPage=1;
         this.axios
         .post("/showMerchant", {
           merProName: this.merProName,//服务区域

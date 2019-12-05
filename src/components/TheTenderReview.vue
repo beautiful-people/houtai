@@ -1,70 +1,145 @@
 <template>
   <div class="TheTenderReview">
-    <div class="search-content">
-      <input type="text" v-model="search" placeholder="请输入商家的姓名进行查找" />
-      <button type="button" @click="getMerName(search)" class="search">查找</button>
-    </div>
-    <el-table :data="tableData" style="width: 100%" max-height="400">
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="商家注册名">
-              <span>{{ props.row.name }}</span>
-            </el-form-item>
-            <el-form-item label="联系人">
-              <span>{{ props.row.people }}</span>
-            </el-form-item>
-            <el-form-item label="手机">
-              <span>{{ props.row.tel }}</span>
-            </el-form-item>
-            <el-form-item label="商家全称">
-              <span>{{ props.row.shopId }}</span>
-            </el-form-item>
-            <el-form-item label="服务区域">
-              <span>{{ props.row.category }}</span>
-            </el-form-item>
-            <el-form-item label="业务范围">
-              <span>{{ props.row.address }}</span>
-            </el-form-item>
-            <el-form-item label="承接价位">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-            <el-form-item label="行业库">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-            <el-form-item label="经营模式">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-            <el-form-item label="商家性质">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-            <el-form-item label="注册资本">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-            <el-form-item label="详细地址">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-            <el-form-item label="商家简介">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
-      <el-table-column label="商家 ID" prop="id" align="center"></el-table-column>
-      <el-table-column label="商家注册名" prop="name" align="center"></el-table-column>
-      <el-table-column label="联系人" prop="people" align="center"></el-table-column>
-      <el-table-column label="手机" prop="tel" align="center"></el-table-column>
-      <el-table-column label="操作" prop="operation" align="center">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="danger"
-            @click="dialogVisible = true,handleDelete(scope.row)"
-          >允许招标</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 认证的模态框 -->
+    <el-tabs :tab-position="tabPosition" style="height: 200px;" @tab-click="tabData">
+      <el-tab-pane label="全部">
+        <el-table :data="tableData" style="width: 100%" max-height="390">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="商家">
+                  <span>{{ props.row.sendUserName }}</span>
+                </el-form-item>
+                <el-form-item label="商家ID">
+                  <span>{{ props.row.sendUserId }}</span>
+                </el-form-item>
+                <el-form-item label="商家名称">
+                  <span>{{ props.row.sendRole }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态" prop="messageStatus" align="center"></el-table-column>
+          <el-table-column label="商家名称" prop="sendRole" align="center"></el-table-column>
+          <el-table-column label="消息内容" prop="messageContent" align="center"></el-table-column>
+          <el-table-column label="消息时间" prop="messageDate" align="center"></el-table-column>      
+          <el-table-column label="操作" prop="operation" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                class="cancel"
+                type="primary"
+                @click="particulars = true,handleDelete(scope.row)"
+              >查看详情</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="未读">
+        <el-table :data="tableData" style="width: 100%" max-height="390">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="商家">
+                  <span>{{ props.row.sendUserName }}</span>
+                </el-form-item>
+                <el-form-item label="商家ID">
+                  <span>{{ props.row.sendUserId }}</span>
+                </el-form-item>
+                <el-form-item label="商家名称">
+                  <span>{{ props.row.sendRole }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态" prop="messageStatus" align="center"></el-table-column>
+          <el-table-column label="商家名称" prop="sendRole" align="center"></el-table-column>
+          <el-table-column label="消息内容" prop="messageContent" align="center"></el-table-column>
+          <el-table-column label="消息时间" prop="messageDate" align="center"></el-table-column>      
+          <el-table-column label="操作" prop="operation" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                class="cancel"
+                type="primary"
+                @click="particulars = true,handleDelete(scope.row)"
+              >查看详情</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="已读">
+        <el-table :data="tableData" style="width: 100%" max-height="390">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="商家">
+                  <span>{{ props.row.sendUserName }}</span>
+                </el-form-item>
+                <el-form-item label="商家ID">
+                  <span>{{ props.row.sendUserId }}</span>
+                </el-form-item>
+                <el-form-item label="商家名称">
+                  <span>{{ props.row.sendRole }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态" prop="messageStatus" align="center"></el-table-column>
+          <el-table-column label="商家名称" prop="sendRole" align="center"></el-table-column>
+          <el-table-column label="消息内容" prop="messageContent" align="center"></el-table-column>
+          <el-table-column label="消息时间" prop="messageDate" align="center"></el-table-column>      
+          <el-table-column label="操作" prop="operation" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                class="cancel"
+                type="primary"
+                @click="particulars = true,handleDelete(scope.row)"
+              >查看详情</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
+
+    <!-- 查看商家认证按钮的模态框 -->
+    <el-dialog
+      title="详情"
+      :visible.sync="particulars"
+      width="30%"
+      :before-close="handleClose"
+      class="model"
+    >
+      <ul class="particulars">
+        <li>面积（平方米）：{{tender.area}}</li>
+        <li>项目名称：{{tender.calusename}}</li>
+        <li>投标公司要求：{{tender.compayRequest}}</li>
+        <li> 装修预算（万元）：{{tender.decorationBudget}}</li>
+        <li>户型结构：{{tender.familyStructure}}</li>
+        <li>装修招标详细要求：{{tender.fitmentRequest}}</li>
+        <li>房屋现状：{{tender.housingSituation}}</li>
+        <li>联系人：{{tender.linkMan}}</li>
+        <li>地点：{{tender.location}}</li>
+        <li>中标商家：{{tender.merId}}</li>
+        <li>用户：{{tender.merchant}}</li>
+        <li>在线工地：{{tender.onlinesites}}</li>
+        <li>联系方式：{{tender.phone}}</li>
+        <li>预计开工时间:{{tender.startTime}}</li>
+        <li>当前状态:{{tender.state}}</li>
+        <li>招标结束时间:{{tender.tenderEndTime}}</li>
+        <li>招标Id:{{tender.tenderId}}</li>
+        <li>招标编号:{{tender.tenderNum}}</li>
+        <li>招标开始时间:{{tender.tenderStartTime}}</li>
+        <li>工期:{{tender.timeForProject}}</li>
+      </ul>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="particulars = false">取消</el-button>
+        <el-button type="primary" @click="particulars = false,dialogVisible = true" class="sure">通过</el-button>
+      </span>
+    </el-dialog>
+
+
+    <!-- 通过招标认证的模态框 -->
     <el-dialog
       title="注意"
       :visible.sync="dialogVisible"
@@ -74,8 +149,8 @@
     >
       <span class="span">是否允许招标？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false" class="sure">确 定</el-button>
+        <el-button @click="cancel(),dialogVisible = false">否</el-button>
+        <el-button type="primary" @click="dialogVisible = false,Deauthentication()" class="sure">是</el-button>
       </span>
     </el-dialog>
 
@@ -87,7 +162,7 @@
       :current-page.sync="currentPage"
       :page-size="pageSize"
       layout="prev, pager, next, jumper"
-      :total="totalPage"
+      :total="totalCount"
     >
       <!-- total:总共数据  page-size:每页显示条目个数    :current-page.sync="currentPage"当前所在的页码-->
     </el-pagination>
@@ -100,62 +175,40 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      particulars:false,
       search: "", //商家名字
-      accId: "",
+      messageId: "",
       currentPage: 1 /* 当前页码 */,
-      totalPage: 0, //获取数据的总条数
+      totalCount: 0, //获取数据的总条数
       pageSize: 3,
       merProName: "", //服务区域
-      provinceList: [],
-      tableData: [
-        {
-          id: "12987122",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333",
-          tel: "11111111111",
-          people: "大王"
-        },
-        {
-          id: "12987123",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        },
-        {
-          id: "12987125",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        },
-        {
-          id: "12987126",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        }
-      ]
+      provinceList: [],//区域信息集合
+      tableData: [],
+      tender:{},//认证详情
+      messageStatus:"",
+      tabPosition:"top",
+      messageInfoId:""
     };
   },
   mounted() {
     this.getData();
   },
   methods: {
-    handleDelete(row) {      /* 取消商家认证按钮,获取id值，并向服务器传送id值 */
-      console.log(row.id);
-      this.admId = row.id;
+    handleDelete(row) {/* 详情按钮，获取id值，并向服务器传送id值 */
+      console.log(row.messageInfoId);
+      this.messageInfoId = row.messageInfoId;
+      this.messageId = row.messageId;
+      this.axios
+        .post("/showReleasingNoticesInfo", {
+          messageInfoId: this.messageInfoId
+        })
+        .then(res => {
+          console.log('认证详情',res.data.data.tender);
+          this.tender = res.data.data.tender;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     handleClose(done) {      /* 取消商家认证模态框的关闭 */
       this.$confirm("确认关闭？")
@@ -164,25 +217,99 @@ export default {
         })
         .catch(() => {});
     },
+    Deauthentication() {  /* 点击是按钮，向服务器传送id值，允许商家招标 */
+      this.axios
+        .post("/reMessageOperation", {
+          tenderId: this.tender.tenderId,
+          messageId:this.messageId,
+          operation:"yes"
+        })
+        .then(res => {
+          console.log(res.data.code);
+          this.open2('通过招标设置成功');
+          this.getData();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    cancel() {      /* 点击取消按钮，向服务器传送id值，不通过商家认证 */
+      this.axios
+        .post("/reMessageOperation", {
+          tenderId: this.tender.tenderId,
+          messageId:this.messageId,
+          operation:"no"
+        })
+        .then(res => {
+          console.log(res.data.code);
+          this.open2('不通过招标设置成功');
+          this.getData();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     getMerName(merName) {      /* 根据名字查找商家 */
       console.log(merName);
     },
-    getData() {
+    handleSizeChange(val) {      /* 每页多少条数据 */
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {      /* 获取当前页码 */
       this.axios
-        .post("/showMerchant", {
-          merProName: this.merProName, //服务区域
-          merName: this.search,
-          currentPage: this.currentPage, //当前页
-          pageSize: this.pageSize //每页显示的条数
+        .post("/reShowMessages", {
+          currentPage: val, //当前页
+          pageSize: this.pageSize, //每页显示的条数
+          messageStatus:this.messageStatus
         })
         .then(res => {
-          /* console.log('分页数据',res.data); */
+          console.log('认证数据',res.data.data.merchantList);
           this.tableData = res.data.data.merchantList;
-          /* console.log(this.tableData); */
-          this.totalPage = res.data.data.page.totalCount; //获取数据的总条数
-          /* console.log(this.totalPage);
-          console.log(res.data.data.provinceList) */
-          this.provinceList = res.data.data.provinceList;
+          this.totalCount = res.data.data.page.totalCount;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    open2(message) {
+        this.$message({
+          message: message,
+          type: 'success'
+        })
+    },
+    getData() {//获取数据
+      this.axios
+        .post("/reShowMessages", {
+          currentPage: this.currentPage, //当前页
+          pageSize: this.pageSize, //每页显示的条数
+          messageStatus:this.messageStatus
+        })
+        .then(res => {
+          console.log('认证数据',res.data.data.merchantList);
+          this.tableData = res.data.data.merchantList;
+          console.log('分页',res.data.data);
+          this.totalCount = res.data.data.page.totalCount;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    tabData(target,event) {//tab切换事件
+      // console.log(target.label);
+      this.messageStatus = target.label
+      this.currentPage = 1
+      console.log(event);
+      this.axios
+        .post("/reShowMessages", {
+          currentPage: this.currentPage, //当前页
+          pageSize: this.pageSize,//每页显示的条数
+          messageStatus:this.messageStatus
+        })
+        .then(res => {
+          // console.log('认证数据',res.data.data.messageList);
+          this.tableData = res.data.data.merchantList;
+          this.totalCount = res.data.data.page.totalCount;
+          console.log(this.currentPage);
         })
         .catch(err => {
           console.log(err);
@@ -278,5 +405,11 @@ export default {
     border: 1px solid #409eff;
   }
   margin-bottom: 10px;
+}
+.particulars li {
+  list-style:none
+}
+.particulars,li {
+  float: left;
 }
 </style>
