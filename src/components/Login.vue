@@ -35,12 +35,13 @@ export default {
         .post("/login/loginAcc", {
           accName: this.username,
           accPwd: this.userpass
-        })
+        }
+        )
         .then(res => {
           console.log(res.data);
           if (res.data.code == "200") {
             // var token = "njaksxbxkjasbkjcxasbjk" // 模拟后台返回的token
-            var token = res.data.account;
+            var token = res.data.data.token;
             sessionStorage.setItem("token", token);
             var accountId = res.data.data.token;
             sessionStorage.setItem("accountId",accountId)
@@ -55,12 +56,17 @@ export default {
             this.$router.replace("/home/BusinessManagement");
 
           } else {
-            console.log("登陆失败");
+            this.username = ""
+            this.userpass = ""
+            this.open4();
           }
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    open4() {
+        this.$message.error('账号或密码错误');
     }
   }
 };

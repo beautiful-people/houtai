@@ -1,9 +1,9 @@
 <template>
   <div class="about">
     <div class="nav">
-      <span>地区:{{admArea}}</span>
+      <span>{{admArea}}</span>
       <div>
-        <span>管理员：{{power}}</span>
+        <span>身份：{{power}}</span>
         <a href="javascript:;" @click="quit">退出</a>
       </div>
     </div>

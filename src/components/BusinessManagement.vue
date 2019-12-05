@@ -103,6 +103,10 @@ export default {
         merProName:"",//服务区域
         provinceList:[],
         /* proName:""//超级管理员选择的服务区域 */
+        token: sessionStorage.getItem("token"),
+        accountId:sessionStorage.getItem("accountId"),
+        power:sessionStorage.getItem("power"),
+        admArea:sessionStorage.getItem("admArea")
     };
   },
   mounted() {
@@ -118,7 +122,12 @@ export default {
         this.axios
         .post("/updateMerchant", {
           merId:this.accId
-        })
+        },{
+            headers: {
+              "content-type": "application/json",
+              "token": this.token
+            }
+          })
         .then(res => {
           console.log(res.data.code);
           this.getData();
@@ -143,7 +152,13 @@ export default {
           merName:this.search,
           currentPage: this.currentPage,//当前页
           pageSize:this.pageSize,//每页显示的条数
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": this.token
+            }
+          })
         .then(res => {
           console.log(res.data);
           this.tableData =  res.data.data.merchantList;
@@ -166,7 +181,13 @@ export default {
           currentPage: this.currentPage,//当前页
           pageSize:this.pageSize,//每页显示的条数
           proName:this.proName
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": this.token
+            }
+          })
         .then(res => {
           /* console.log(res.data); */
           this.tableData =  res.data.data.merchantList;
@@ -188,7 +209,13 @@ export default {
           merName:this.search,
           currentPage: this.currentPage,//当前页
           pageSize:this.pageSize,//每页显示的条数
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": this.token
+            }
+          })
         .then(res => {
           /* console.log(res.data); */
           this.tableData =  res.data.data.merchantList;
@@ -208,7 +235,13 @@ export default {
           merName:this.search,
           currentPage: this.currentPage,//当前页
           pageSize:this.pageSize,//每页显示的条数
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": this.token
+            }
+          })
         .then(res => {
           /* console.log('分页数据',res.data); */
           this.tableData =  res.data.data.merchantList;

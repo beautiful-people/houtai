@@ -29,7 +29,6 @@
             :auto-upload="false"
             :on-change="imgBroadcastChange"
             :onSuccess="uploadSuccess"
-            :headers="headers"
             list-type="picture-card"
             multiple
             name="file">
@@ -81,9 +80,6 @@ export default {
         typeValue:"",//选取类型的value值
         styleValue:"",//选取风格的value值
         content:"",
-        headers:{
-            "Content-Type":"multipart/form-data"
-        },
         file:[],
         /* fileName:"", */
         resData:{}
@@ -110,7 +106,12 @@ export default {
               formData.append('file', this.file[i]);
           }
           this.axios
-            .post("/addImagsAndCollections",formData)
+            .post("/addImagsAndCollections",formData,{
+            headers: {
+              "Content-Type":"multipart/form-data",
+              "token": sessionStorage.getItem("token")
+            }
+          })
             .then(res => {
             console.log(res.data);
             if(res.data.code == '200') {

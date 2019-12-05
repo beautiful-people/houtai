@@ -247,7 +247,13 @@ export default {
       this.axios
         .post("/peShowMerchantInfos", {
           messageInfoId: this.messageInfoId
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
+          })
         .then(res => {
           console.log('认证详情',res.data.data.merchant);
           this.merchant = res.data.data.merchant;
@@ -269,7 +275,13 @@ export default {
           merId: this.merchant.merId,
           messageId:this.messageId,
           operation:"yes"
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
+          })
         .then(res => {
           console.log(res.data.code);
           this.open2('认证成功');
@@ -285,7 +297,13 @@ export default {
           merId: this.merchant.merId,
           messageId:this.messageId,
           operation:"no"
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
+          })
         .then(res => {
           console.log(res.data.code);
           this.open2('否认认证成功');
@@ -307,7 +325,13 @@ export default {
           currentPage: val, //当前页
           pageSize: this.pageSize, //每页显示的条数
           messageStatus:this.messageStatus
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
+          })
         .then(res => {
           // console.log('认证数据',res. data.data.messageList);
           this.tableData = res.data.data.messageList;
@@ -329,7 +353,13 @@ export default {
           currentPage: this.currentPage, //当前页
           pageSize: this.pageSize,//每页显示的条数
           messageStatus:this.messageStatus
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
+          })
         .then(res => {
           console.log('认证数据',res.data.data);
           this.tableData = res.data.data.messageList;
@@ -349,7 +379,13 @@ export default {
           currentPage: this.currentPage, //当前页
           pageSize: this.pageSize,//每页显示的条数
           messageStatus:this.messageStatus
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
+          })
         .then(res => {
           // console.log('认证数据',res.data.data.messageList);
           this.tableData = res.data.data.messageList;

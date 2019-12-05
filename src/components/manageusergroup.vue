@@ -149,6 +149,11 @@ export default {
         .post("/changeAdministrators", {
             accId:this.accId,
             admArea:this.editAdmArea//新建管理员负责区域
+        },{
+          headers:{
+            "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+          }
         })
         .then(res => {
             console.log("数据", res.data.code);
@@ -177,6 +182,11 @@ export default {
           this.axios
           .post("/deleteAdministratorPowers", {
             accId:delAccId
+          },{
+            headers:{
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
           })
           .then(res => {
             if(res.data.code == '200'){
@@ -205,6 +215,11 @@ export default {
             accPwd:this.accPwd,//新建管理员初始密码
             accPower:this.accPower,//新建管理员身份
             admArea:this.newAdmArea//新建管理员负责区域
+        },{
+          headers:{
+            "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+          }
         })
         .then(res => {
             console.log("数据", res.data.code);
@@ -247,6 +262,11 @@ export default {
           currentPage: this.currentPage, //当前页
           pageSize: this.pageSize, //每页显示的条数
           admArea:this.admArea
+        },{
+          headers:{
+            "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+          }
         })
         .then(res => {
           console.log("数据", res.data);
@@ -263,6 +283,11 @@ export default {
           currentPage: this.currentPage, //当前页
           pageSize: this.pageSize, //每页显示的条数
           admArea:this.admArea
+        },{
+          headers:{
+            "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+          }
         })
         .then(res => {
           // console.log("数据", res.data);
@@ -283,6 +308,11 @@ export default {
           currentPage: val, //当前页
           pageSize: this.pageSize, //每页显示的条数
           admArea:this.admArea
+        },{
+          headers:{
+            "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+          }
         })
         .then(res => {
           console.log("数据", res.data);
@@ -300,6 +330,11 @@ export default {
       .then(res => {
         console.log(res.data.data.provinceList);
         this.provinceList = res.data.data.provinceList; //区域信息集合
+      },{
+        headers:{
+          "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+        }
       })
       .catch(err => {
         console.log(err);

@@ -75,13 +75,18 @@ export default {
         this.axios
         .post("/ResetAdministratorPasswords", {
           accPwd: checkPass
-        })
+        },
+        {
+            headers: {
+              "content-type": "application/json",
+              "token": sessionStorage.getItem("token")
+            }
+          })
         .then(res => {
           console.log(res.data.code);
           if(res.data.code == '200') {
             this.open2();
-            this.pass="";
-            this.checkPass="";
+            this.resetForm();
           }    
         })
         .catch(err => {
